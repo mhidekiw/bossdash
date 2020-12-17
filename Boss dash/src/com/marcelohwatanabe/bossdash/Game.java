@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 
+import com.marcelohwatanabe.bossdash.graphics.Assets;
 import com.marcelohwatanabe.bossdash.graphics.ImageLoader;
 import com.marcelohwatanabe.bossdash.graphics.SpriteSheet;
 import com.marcelohwatanabe.display.Display;
@@ -20,28 +21,25 @@ public class Game implements Runnable {
 	
 	private boolean running = false;
 	
+	// Graphics and rendering
 	private BufferStrategy bs;
 	private Graphics g;
 	
-	//temp
-	private BufferedImage testImage;
-	private SpriteSheet sheet;
-	
+	// Game constructor
 	public Game(String title, int width, int height) {
 		this.title = title;
 		this.width = width;
 		this.height = height;
 	}
 	
+	// Game initialization
 	private void init() {
 		display = new Display(title, width, height);
-		//temp
-		testImage = ImageLoader.loadImage("/textures/spritesheet.png");
-		sheet = new SpriteSheet(testImage);
+		Assets.init();
 	}
-	
+	int x;
 	private void tick() {
-		
+		x++;
 	}
 	
 	private void render() {
@@ -57,7 +55,7 @@ public class Game implements Runnable {
 		g.clearRect(0, 0, width, height);
 		
 		// Drawing
-		g.drawImage(sheet.crop(16, 16, 16, 16), 5, 5, null);
+		g.drawImage(Assets.img3, x, 100, null);
 		
 		// Render and finalization
 		bs.show(); // Works the buffers and shows the final image
@@ -69,9 +67,31 @@ public class Game implements Runnable {
 		
 		init();
 		
+		// Time control
+		int fps = 60;
+		double timePerTick = 1000000000 / fps;
+		double timeToNextFrame = timePerTick;
+		long now;
+		long lastTime = System.nanoTime();
+		long initialTime = lastTime;
+		
+		int ticks = 0;
+		
 		while (running) {
-			tick();
-			render();
+			
+			now = System.nanoTime();
+			
+			if (now - lastTime >= (long) timeToNextFrame) {
+				
+				// Update time
+				long extraTime = now - (lastTime + (long) timeToNextFrame);
+				lastTime = now;
+				timeToNextFrame = (long) timePerTick + extraTime;
+				
+				// Game update
+				tick();
+				render();
+			}
 		}
 		
 		stop();
