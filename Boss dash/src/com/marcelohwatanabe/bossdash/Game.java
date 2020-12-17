@@ -6,6 +6,7 @@ import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 
 import com.marcelohwatanabe.bossdash.graphics.ImageLoader;
+import com.marcelohwatanabe.bossdash.graphics.SpriteSheet;
 import com.marcelohwatanabe.display.Display;
 
 public class Game implements Runnable {
@@ -24,6 +25,7 @@ public class Game implements Runnable {
 	
 	//temp
 	private BufferedImage testImage;
+	private SpriteSheet sheet;
 	
 	public Game(String title, int width, int height) {
 		this.title = title;
@@ -34,7 +36,8 @@ public class Game implements Runnable {
 	private void init() {
 		display = new Display(title, width, height);
 		//temp
-		testImage = ImageLoader.loadImage("/textures/test.png");
+		testImage = ImageLoader.loadImage("/textures/spritesheet.png");
+		sheet = new SpriteSheet(testImage);
 	}
 	
 	private void tick() {
@@ -54,7 +57,7 @@ public class Game implements Runnable {
 		g.clearRect(0, 0, width, height);
 		
 		// Drawing
-		g.drawImage(testImage, 20, 20, null);
+		g.drawImage(sheet.crop(16, 16, 16, 16), 5, 5, null);
 		
 		// Render and finalization
 		bs.show(); // Works the buffers and shows the final image
