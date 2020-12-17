@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 
 import com.marcelohwatanabe.bossdash.graphics.Assets;
+import com.marcelohwatanabe.bossdash.input.KeyManager;
 import com.marcelohwatanabe.bossdash.states.GameState;
 import com.marcelohwatanabe.bossdash.states.State;
 import com.marcelohwatanabe.bossdash.states.StateManager;
@@ -28,26 +29,34 @@ public class Game implements Runnable {
 	private StateManager stateManager;
 	private State gameState;
 	
+	// Input
+	private KeyManager keyManager;
+	
 	// Game constructor
 	public Game(String title, int width, int height) {
 		this.title = title;
 		this.width = width;
 		this.height = height;
+		keyManager = new KeyManager();
 	}
 	
 	// Game initialization
 	private void init() {
 		
 		display = new Display(title, width, height);
+		display.getFrame().addKeyListener(keyManager);
+		
 		Assets.init();
 		
-		gameState = new GameState();
+		gameState = new GameState(this);
 		
 		stateManager = new StateManager();
 		stateManager.setState(gameState);
 	}
 
 	private void tick() {
+		
+		keyManager.tick();
 		
 		if (stateManager.getState() != null) {
 			stateManager.getState().tick();

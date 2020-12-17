@@ -2,11 +2,14 @@ package com.marcelohwatanabe.bossdash.sprites;
 
 import java.awt.Graphics;
 
+import com.marcelohwatanabe.bossdash.Game;
 import com.marcelohwatanabe.bossdash.graphics.Assets;
 
 public class Sprite {
 	
 	private double x, y;
+	
+	private Game game;
 	
 	//private Animation animation;
 	//private double velocityX;
@@ -18,7 +21,8 @@ public class Sprite {
 	
 	//collider, tint, rotateToDirection, mirrorX, mirrorY, depth, lifetime, bounciness
 	
-	public Sprite (double x, double y) {
+	public Sprite (Game game, double x, double y) {
+		this.game = game;
 		this.x = x;
 		this.y = y;
 	}
