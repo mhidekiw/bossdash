@@ -1,13 +1,12 @@
 package com.marcelohwatanabe.bossdash;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
-import java.awt.image.BufferedImage;
 
 import com.marcelohwatanabe.bossdash.graphics.Assets;
-import com.marcelohwatanabe.bossdash.graphics.ImageLoader;
-import com.marcelohwatanabe.bossdash.graphics.SpriteSheet;
+import com.marcelohwatanabe.bossdash.states.GameState;
+import com.marcelohwatanabe.bossdash.states.State;
+import com.marcelohwatanabe.bossdash.states.StateManager;
 import com.marcelohwatanabe.display.Display;
 
 public class Game implements Runnable {
@@ -25,6 +24,10 @@ public class Game implements Runnable {
 	private BufferStrategy bs;
 	private Graphics g;
 	
+	// States
+	private StateManager stateManager;
+	private State gameState;
+	
 	// Game constructor
 	public Game(String title, int width, int height) {
 		this.title = title;
@@ -34,12 +37,21 @@ public class Game implements Runnable {
 	
 	// Game initialization
 	private void init() {
+		
 		display = new Display(title, width, height);
 		Assets.init();
+		
+		gameState = new GameState();
+		
+		stateManager = new StateManager();
+		stateManager.setState(gameState);
 	}
-	int x;
+
 	private void tick() {
-		x++;
+		
+		if (stateManager.getState() != null) {
+			stateManager.getState().tick();
+		}
 	}
 	
 	private void render() {
@@ -55,7 +67,9 @@ public class Game implements Runnable {
 		g.clearRect(0, 0, width, height);
 		
 		// Drawing
-		g.drawImage(Assets.img3, x, 100, null);
+		if (stateManager.getState() != null) {
+			stateManager.getState().render(g);
+		}		
 		
 		// Render and finalization
 		bs.show(); // Works the buffers and shows the final image
@@ -73,9 +87,6 @@ public class Game implements Runnable {
 		double timeToNextFrame = timePerTick;
 		long now;
 		long lastTime = System.nanoTime();
-		long initialTime = lastTime;
-		
-		int ticks = 0;
 		
 		while (running) {
 			
