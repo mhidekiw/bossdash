@@ -8,7 +8,7 @@ import com.marcelohwatanabe.bossdash.sprites.Sprite;
 public class GameState extends State{
 /* Main game state */	
 	
-	private Sprite player = new Sprite(game, 100.0, 100.0);
+	private Sprite player = new Sprite(100.0, 100.0, 16, 16);
 	
 	public GameState(Game game) {
 		super(game);
@@ -16,7 +16,7 @@ public class GameState extends State{
 	
 	@Override
 	public void tick() {
-		
+		player.tick();
 	}
 
 	@Override
