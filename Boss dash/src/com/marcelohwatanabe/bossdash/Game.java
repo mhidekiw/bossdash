@@ -37,7 +37,7 @@ public class Game implements Runnable {
 		this.title = title;
 		this.width = width;
 		this.height = height;
-		keyManager = new KeyManager();
+		keyManager = KeyManager.getInstance();
 	}
 	
 	// Game initialization

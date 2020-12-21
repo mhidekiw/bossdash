@@ -3,6 +3,7 @@ package com.marcelohwatanabe.bossdash.sprites;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
+import com.marcelohwatanabe.bossdash.Game;
 import com.marcelohwatanabe.bossdash.graphics.Assets;
 
 public class Sprite {
@@ -11,6 +12,8 @@ public class Sprite {
 	public static final double DEFAULT_SCALE = 1;
 	public static final double DEFAULT_WIDTH = 100, DEFAULT_HEIGHT = 100;
 	public static final BufferedImage DEFAULT_ANIMATION = Assets.img1; //temp
+	
+	public Game game;
 	
 	private double x, y;
 	private double width, height;
@@ -23,8 +26,8 @@ public class Sprite {
 	private BufferedImage animation; //temp
 	
 	
-	private double velocityX;
-	private double velocityY;
+	protected double velocityX;
+	protected double velocityY;
 	
 	//private double scale;
 	//private boolean visible;
@@ -105,24 +108,14 @@ public class Sprite {
 		this.height = height;
 	}
 
-	public Sprite (double x, double y, double width, double height) {
+	public Sprite (Game game, double x, double y, double width, double height) {
+		
+		this.game = game;
 		
 		this.x = x;
 		this.y = y;
 		this.width = width;
 		this.height = height;
-		this.lifetime = DEFAULT_LIFETIME;
-		this.scale = DEFAULT_SCALE;
-		this.animation = DEFAULT_ANIMATION;
-		this.velocityX = 0;
-		this.velocityY = 0;
-	}
-	
-	public Sprite (double x, double y) {
-		this.x = x;
-		this.y = y;
-		this.width = DEFAULT_WIDTH;
-		this.height = DEFAULT_HEIGHT;
 		this.lifetime = DEFAULT_LIFETIME;
 		this.scale = DEFAULT_SCALE;
 		this.animation = DEFAULT_ANIMATION;
